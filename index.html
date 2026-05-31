@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>梦想国度 · 玩家指令站 & 日常影集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0b1a1f;
+            font-family: 'Inter', 'Minecraft', 'Segoe UI', sans-serif;
+            color: #eef4ff;
+            line-height: 1.5;
+            padding-bottom: 2rem;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(0deg, rgba(60,100,50,0.2) 0px, rgba(60,100,50,0.2) 2px, transparent 2px, transparent 8px),
+                              repeating-linear-gradient(90deg, rgba(40,70,30,0.15) 0px, rgba(40,70,30,0.15) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: -2;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(30,50,35,0.5), #09161b 90%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 2rem;
+        }
+        .mc-card {
+            background: rgba(20, 30, 25, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 2px solid rgba(112, 84, 56, 0.8);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .mc-card:hover {
+            transform: translateY(-3px);
+            border-color: #c9a56b;
+        }
+        h1, h2 {
+            font-family: 'Press Start 2P', monospace;
+            font-weight: 400;
+            text-shadow: 3px 3px 0 #2d2b1f;
+        }
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #f9e0a0, #e6c57e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: none;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            border-left: 5px solid #f3b33d;
+            padding-left: 1rem;
+            color: #fbdd9a;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem 1rem;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            border: 1px solid #ffd966;
+        }
+        .server-ip {
+            background: #1e2a24;
+            display: inline-block;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            font-family: monospace;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffdd99;
+            margin: 1rem 0;
+        }
+        .badge {
+            background: #2e4a2c;
+            border-radius: 32px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0.3rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #5b3c1a;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #fff6e0;
+            cursor: pointer;
+            border-bottom: 3px solid #2f1e0c;
+            font-family: inherit;
+            transition: 0.1s;
+        }
+        .btn-primary {
+            background: #f0a22e;
+            color: #241a0a;
+            border-bottom-color: #a55d1a;
+        }
+        .btn-primary:hover {
+            background: #ffb642;
+            transform: scale(1.02);
+        }
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .command-item {
+            background: #0f1915b3;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid #c9a242;
+        }
+        .command-code {
+            font-family: 'Courier New', monospace;
+            background: #1e2822;
+            padding: 0.3rem 1rem;
+            border-radius: 28px;
+            font-weight: bold;
+            color: #ffdc97;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .photo-card {
+            background: #1a2721cc;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #bc9a5a;
+            transition: 0.2s;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            background: #2c3a2e;
+        }
+        .photo-card .caption {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            text-align: center;
+            background: #0f1915aa;
+        }
+        .admin-note {
+            background: #2a2b1fcc;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            border-left: 4px solid #ffc857;
+        }
+        .rule-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .rule-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.6rem;
+            position: relative;
+        }
+        .rule-list li i {
+            position: absolute;
+            left: 0;
+            top: 0.2rem;
+            color: #f3b33d;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #6f855e;
+            font-size: 0.75rem;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2a1fdd;
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            color: #f9e2a1;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0;
+            transition: 0.2s;
+            z-index: 999;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.5rem; }
+            .server-ip { font-size: 1rem; }
+            .command-item { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <i class="fas fa-cube" style="font-size: 2rem; color: #f5bc70;"></i>
+        <h1>✨ 梦想国度 · 冒险指南 ✨</h1>
+        <div class="server-ip"><i class="fas fa-server"></i> mcmoyu.top | 版本 1.21.11</div>
+        <div><span class="badge"><i class="fab fa-qq"></i> 玩家群: 1073529084</span></div>
+        <div style="margin-top: 1rem;">
+            <button class="btn btn-primary" id="copyIpBtn"><i class="fas fa-copy"></i> 复制服务器IP</button>
+            <button class="btn btn-primary" id="copyQQBtn"><i class="fab fa-qq"></i> 复制群号</button>
+        </div>
+    </div>
+
+    <!-- 指令区域 -->
+    <div class="mc-card">
+        <h2><i class="fas fa-terminal"></i> 游戏内指令大全</h2>
+        <div class="command-item"><div><span class="command-code">/reg 密码 密码</span><div class="small-note">首次注册</div></div><button class="btn copy-cmd" data-cmd="/reg <你的密码> <重复密码>">复制</button></div>
+        <div class="command-item"><div><span class="command-code">/login 密码</span><div class="small-note">登录服务器</div></div><button class="btn copy-cmd" data-cmd="/login <你的密码>">复制</button></div>
+        <div class="command-item"><div><span class="command-code">/changepassword &lt;旧密码&gt; &lt;新密码&gt;</span><div class="small-note">修改密码</div></div><button class="btn copy-cmd" data-cmd="/changepassword <旧密码> <新密码>">复制</button></div>
+        <div class="command-item"><div><span class="command-code">/绑定 游戏ID</span><div class="small-note">QQ群内绑定游戏账号</div></div><button class="btn copy-cmd" data-cmd="/绑定 你的游戏ID">复制</button></div>
+        <div class="command-item"><div><span class="command-code">/解绑 游戏ID</span><div class="small-note">QQ群内解绑账号</div></div><button class="btn copy-cmd" data-cmd="/解绑 你的游戏ID">复制</button></div>
+        <div class="admin-note"><i class="fas fa-info-circle"></i> 材质包提示：进入服务器若未自动加载材质包，请加QQ群下载「服务器材质包」放入 <code>.minecraft/resourcepacks</code> 并手动启用。</div>
+    </div>
+
+    <!-- 📸 玩家日常照片展示区 (可管理) -->
+    <div class="mc-card">
+        <h2><i class="fas fa-images"></i> 📸 玩家日常·光影回忆</h2>
+        <p style="margin-bottom: 0.8rem;">来自梦想国度冒险家们的精彩瞬间（点击下方按钮可管理照片）</p>
+        <div id="photoGallery" class="photo-grid">
+            <!-- 动态加载照片 -->
+        </div>
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.5rem;">
+            <button id="addPhotoBtn" class="btn" style="background:#3d6b42;"><i class="fas fa-plus-circle"></i> 添加新照片 (管理员)</button>
+            <button id="managePhotosBtn" class="btn" style="background:#5d523b;"><i class="fas fa-edit"></i> 编辑/删除照片</button>
+        </div>
+        <div class="admin-note">
+            <i class="fas fa-lock-open"></i> <strong>管理说明（仅您可操作）：</strong><br>
+            - 点击「添加新照片」可输入图片URL和描述，照片会保存在您的浏览器本地（localStorage），不会丢失。<br>
+            - 「编辑/删除」可移除不需要的照片。<br>
+            - 您也可以直接修改下方 JavaScript 中的 <code>defaultPhotos</code> 数组来预设照片。<br>
+            - 所有数据只存在于您的设备/浏览器中，您拥有完整管理权。
+        </div>
+    </div>
+
+    <!-- 群规与其他信息 -->
+    <div class="grid-2col">
+        <div class="mc-card">
+            <h2><i class="fas fa-gavel"></i> 服务器群规</h2>
+            <ul class="rule-list">
+                <li><i class="fas fa-ban"></i> 禁止涉黄涉暴、危险链接。首次警告，严重踢出。</li>
+                <li><i class="fas fa-comment-slash"></i> 禁止恶意谩骂、引战。严重者直接踢出。</li>
+                <li><i class="fas fa-globe"></i> 禁止讨论敏感政治话题，违者踢出。</li>
+                <li><i class="fas fa-sync-alt"></i> 禁止恶意刷屏。</li>
+                <li><i class="fas fa-smile"></i> 斗图合理，私人恩怨请私聊处理。</li>
+            </ul>
+        </div>
+        <div class="mc-card">
+            <h2><i class="fas fa-plug"></i> 快捷加入指南</h2>
+            <p><strong>版本：</strong> 1.21.11<br>
+            <strong>IP：</strong> mcmoyu.top (默认端口)<br>
+            <strong>注册：</strong> 首次进服 /reg 密码 密码<br>
+            <strong>每次登录：</strong> /login 密码<br>
+            <strong>QQ群：</strong> 1073529084 获取帮助&材质包</p>
+            <div style="margin-top: 1rem; background:#00000033; padding: 0.5rem; border-radius: 1rem; text-align:center">
+                <i class="fab fa-qq fa-2x"></i> 欢迎回家，冒险家！
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>梦想国度 Minecraft 服务器 | 所有指令/群规最终解释归服务器管理组 | 影集数据由您本地管理</p>
+        <p>💡 如需公网访问网站：将本文件上传至任意静态托管 (GitHub Pages / 云主机) 即可获得永久链接</p>
+    </footer>
+</div>
+<div id="toast" class="toast-msg">✔ 复制成功</div>
+
+<script>
+    // ---------- 照片管理模块 (localStorage + 默认样例) ----------
+    let photosArray = [];
+
+    // 默认展示一些示例照片（您可以替换成自己服务器的真实截图链接）
+    const defaultPhotos = [
+        { url: "https://picsum.photos/id/29/400/250", desc: "🌲 主城大合影 · 梦想启程" },
+        { url: "https://picsum.photos/id/100/400/250", desc: "🏰 玩家共建城堡 · 夕阳下" },
+        { url: "https://picsum.photos/id/169/400/250", desc: "⛏️ 矿工聚会 · 钻石狂欢夜" }
+    ];
+
+    function loadPhotos() {
+        const stored = localStorage.getItem("dreamKingdom_photos");
+        if(stored) {
+            photosArray = JSON.parse(stored);
+        } else {
+            photosArray = [...defaultPhotos];
+            savePhotos();
+        }
+        renderGallery();
+    }
+
+    function savePhotos() {
+        localStorage.setItem("dreamKingdom_photos", JSON.stringify(photosArray));
+    }
+
+    function renderGallery() {
+        const gallery = document.getElementById("photoGallery");
+        if(!gallery) return;
+        if(photosArray.length === 0) {
+            gallery.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem;">✨ 暂无照片，点击「添加新照片」上传你们的冒险日常吧 ✨</div>`;
+            return;
+        }
+        gallery.innerHTML = photosArray.map((photo, idx) => `
+            <div class="photo-card" data-idx="${idx}">
+                <img src="${escapeHtml(photo.url)}" alt="玩家日常" loading="lazy" onerror="this.src='https://picsum.photos/id/20/400/250'">
+                <div class="caption">${escapeHtml(photo.desc)}</div>
+            </div>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // 添加照片
+    function addPhoto() {
+        let url = prompt("请输入图片网址（支持直接粘贴图床链接）:", "https://picsum.photos/id/104/400/250");
+        if(!url) return;
+        let desc = prompt("请输入这张照片的描述:", "梦想国度玩家日常");
+        if(desc === null) desc = "冒险留影";
+        photosArray.push({ url: url.trim(), desc: desc.trim() });
+        savePhotos();
+        renderGallery();
+        showToast("✅ 新照片已添加 (仅保存在您的浏览器中)");
+    }
+
+    // 简易管理：删除或修改
+    function managePhotos() {
+        if(photosArray.length === 0) {
+            alert("暂无照片，请先添加～");
+            return;
+        }
+        let listStr = "当前照片列表：\n";
+        photosArray.forEach((p, i) => {
+            listStr += `${i+1}. ${p.desc} (${p.url.substring(0, 50)}...)\n`;
+        });
+        let choice = prompt(listStr + "\n输入要删除的照片编号(如 1)，或输入 'clear' 清空所有:", "");
+        if(choice === null) return;
+        if(choice.toLowerCase() === 'clear') {
+            if(confirm("⚠️ 确认清空所有照片吗？不可恢复。")) {
+                photosArray = [];
+                savePhotos();
+                renderGallery();
+                showToast("已清空所有照片");
+            }
+            return;
+        }
+        let idx = parseInt(choice) - 1;
+        if(!isNaN(idx) && idx >=0 && idx < photosArray.length) {
+            if(confirm(`删除照片「${photosArray[idx].desc}」？`)) {
+                photosArray.splice(idx, 1);
+                savePhotos();
+                renderGallery();
+                showToast("已删除照片");
+            }
+        } else {
+            alert("编号无效");
+        }
+    }
+
+    // ----- 复制功能 + UI初始化 -----
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.opacity = '1';
+        setTimeout(() => toast.style.opacity = '0', 2000);
+    }
+
+    async function copyText(text, successMsg) {
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast(successMsg);
+        } catch(e) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast(successMsg);
+        }
+    }
+
+    // 绑定事件
+    document.getElementById('copyIpBtn')?.addEventListener('click', () => copyText('mcmoyu.top', '✓ IP mcmoyu.top 已复制'));
+    document.getElementById('copyQQBtn')?.addEventListener('click', () => copyText('1073529084', '✓ QQ群号 1073529084 已复制'));
+    document.querySelectorAll('.copy-cmd').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const cmd = btn.getAttribute('data-cmd');
+            if(cmd) copyText(cmd, `指令已复制: ${cmd}`);
+        });
+    });
+    document.getElementById('addPhotoBtn')?.addEventListener('click', addPhoto);
+    document.getElementById('managePhotosBtn')?.addEventListener('click', managePhotos);
+
+    // 启动
+    loadPhotos();
+</script>
+</body>
+</html>
